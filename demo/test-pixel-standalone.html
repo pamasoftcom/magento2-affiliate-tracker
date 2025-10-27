@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Konverty Pixel - Standalone</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { color: #333; }
+        .test-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #4CAF50;
+        }
+        .button {
+            background: #4CAF50;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        .button:hover { background: #45a049; }
+        .button.secondary { background: #2196F3; }
+        .button.secondary:hover { background: #0b7dda; }
+        #console {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 15px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        .log-entry { margin: 5px 0; }
+        .log-info { color: #4FC3F7; }
+        .log-success { color: #4CAF50; }
+        .log-warning { color: #FFC107; }
+        .log-error { color: #F44336; }
+        .cookie-list {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .cookie-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status.active { background: #4CAF50; color: white; }
+        .status.inactive { background: #f44336; color: white; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test Konverty Pixel - Standalone</h1>
+        <p>Questa pagina permette di testare il pixel JavaScript di Konverty senza installare Magento.</p>
+        
+        <!-- Test 1: Visit Tracking -->
+        <div class="test-section">
+            <h2>Test 1: Tracciamento Visite 
+                <span class="status" id="cookie-status">Nessun Cookie</span>
+            </h2>
+            <p>Simula una visita con parametri di affiliazione:</p>
+            
+            <button class="button" onclick="simulateVisit('TEST001', 'facebook', 'summer2025')">
+                📍 Simula Visita con Affiliate
+            </button>
+            
+            <button class="button secondary" onclick="showCookies()">
+                🍪 Mostra Cookie
+            </button>
+            
+            <button class="button secondary" onclick="clearCookies()">
+                🗑️ Cancella Cookie
+            </button>
+            
+            <div id="cookies-display" class="cookie-list" style="display:none;">
+                <h4>Cookie Salvati:</h4>
+                <div id="cookies-list"></div>
+            </div>
+        </div>
+
+        <!-- Test 2: Sale Tracking -->
+        <div class="test-section">
+            <h2>Test 2: Tracciamento Vendita</h2>
+            <p>Simula un ordine completato (richiede cookie affiliazione attivi):</p>
+            
+            <button class="button" onclick="simulateSale()">
+                🛒 Simula Ordine Completato
+            </button>
+        </div>
+
+        <!-- Test 3: Manual Tracking -->
+        <div class="test-section">
+            <h2>Test 3: Tracking Manuale</h2>
+            <p>Invia dati custom all'endpoint:</p>
+            
+            <button class="button secondary" onclick="sendCustomData()">
+                📤 Invia Dati Test
+            </button>
+        </div>
+
+        <!-- Console Output -->
+        <div class="test-section">
+            <h2>📊 Console Log</h2>
+            <div id="console"></div>
+        </div>
+    </div>
+
+    <!-- Load Konverty Pixel -->
+    <script>
+        // Configurazione pixel (simula quella di Magento)
+        window.konvertyConfig = {
+            endpoint: 'https://admin.konverty.com/trackShopify.jsp',
+            cookiePrefix: 'aff_',
+            cookieLifetime: 60,
+            platform: 'magento-test',
+            enabled: true,
+            trackVisits: true,
+            trackSales: true,
+            debug: true
+        };
+
+        // Custom console per UI
+        const originalLog = console.log;
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addLogEntry('info', args.join(' '));
+        };
+
+        function addLogEntry(type, message) {
+            const consoleEl = document.getElementById('console');
+            const entry = document.createElement('div');
+            entry.className = `log-entry log-${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleEl.appendChild(entry);
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // Test Functions
+        function simulateVisit(affiliateId, source, campaign) {
+            addLogEntry('info', `Simulando visita con affiliate_id=${affiliateId}`);
+            
+            // Simula URL con parametri
+            const params = {
+                affiliate_id: affiliateId,
+                utm_source: source,
+                utm_campaign: campaign
+            };
+
+            // Salva cookie manualmente
+            for (let key in params) {
+                document.cookie = `aff_${key}=${params[key]}; path=/; max-age=${60*24*60*60}; SameSite=Lax`;
+            }
+
+            addLogEntry('success', `✓ Cookie salvati con successo`);
+            
+            // Invia tracking
+            if (window.Konverty && window.Konverty.trackVisit) {
+                // Imposta params temporaneamente
+                const url = new URL(window.location);
+                for (let key in params) {
+                    url.searchParams.set(key, params[key]);
+                }
+                window.history.replaceState({}, '', url);
+                
+                window.Konverty.trackVisit();
+                
+                // Ripristina URL originale
+                setTimeout(() => {
+                    window.history.replaceState({}, '', window.location.pathname);
+                }, 100);
+            }
+
+            updateCookieStatus();
+            showCookies();
+        }
+
+        function simulateSale() {
+            addLogEntry('info', 'Simulando vendita...');
+            
+            const orderData = {
+                orderId: 'TEST-' + Date.now(),
+                totalPrice: 150.00,
+                subtotalPrice: 120.00,
+                currency: 'EUR',
+                discountCodes: ['SUMMER10'],
+                customerEmail: 'test@example.com',
+                customerPhone: '+39123456789',
+                customerName: 'Mario Rossi',
+                lineItems: [
+                    {
+                        product_id: '456',
+                        title: 'Prodotto Test',
+                        sku: 'TEST-001',
+                        quantity: 2,
+                        price: 60.00
+                    }
+                ],
+                paymentInfo: [
+                    {
+                        gateway: 'stripe',
+                        amount: 150.00
+                    }
+                ]
+            };
+
+            if (window.Konverty && window.Konverty.trackSale) {
+                window.Konverty.trackSale(orderData);
+                addLogEntry('success', '✓ Vendita tracciata');
+                
+                setTimeout(() => {
+                    addLogEntry('warning', '⚠ Cookie eliminati dopo 1 secondo');
+                    updateCookieStatus();
+                    showCookies();
+                }, 1500);
+            } else {
+                addLogEntry('error', '✗ Pixel non caricato');
+            }
+        }
+
+        function sendCustomData() {
+            addLogEntry('info', 'Inviando dati custom...');
+            
+            const testData = {
+                type: 'test',
+                platform: 'test-standalone',
+                shop: window.location.hostname,
+                timestamp: new Date().toISOString(),
+                test_param: 'custom_value'
+            };
+
+            fetch(window.konvertyConfig.endpoint, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(testData),
+                mode: 'no-cors'
+            }).then(() => {
+                addLogEntry('success', '✓ POST inviato (controlla Network tab)');
+            }).catch(err => {
+                addLogEntry('error', '✗ Errore: ' + err.message);
+            });
+        }
+
+        function showCookies() {
+            const cookies = document.cookie.split('; ');
+            const affCookies = cookies.filter(c => c.startsWith('aff_'));
+            
+            const display = document.getElementById('cookies-display');
+            const list = document.getElementById('cookies-list');
+            
+            list.innerHTML = '';
+            
+            if (affCookies.length === 0) {
+                list.innerHTML = '<div class="cookie-item">Nessun cookie di affiliazione trovato</div>';
+            } else {
+                affCookies.forEach(cookie => {
+                    const div = document.createElement('div');
+                    div.className = 'cookie-item';
+                    div.textContent = cookie;
+                    list.appendChild(div);
+                });
+            }
+            
+            display.style.display = 'block';
+            updateCookieStatus();
+        }
+
+        function clearCookies() {
+            const cookies = document.cookie.split('; ');
+            cookies.forEach(cookie => {
+                const name = cookie.split('=')[0];
+                if (name.startsWith('aff_')) {
+                    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+                }
+            });
+            addLogEntry('warning', 'Cookie eliminati');
+            updateCookieStatus();
+            showCookies();
+        }
+
+        function updateCookieStatus() {
+            const cookies = document.cookie.split('; ');
+            const affCookies = cookies.filter(c => c.startsWith('aff_'));
+            const status = document.getElementById('cookie-status');
+            
+            if (affCookies.length > 0) {
+                status.textContent = `${affCookies.length} Cookie Attivi`;
+                status.className = 'status active';
+            } else {
+                status.textContent = 'Nessun Cookie';
+                status.className = 'status inactive';
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            addLogEntry('success', '✓ Pagina test caricata');
+            addLogEntry('info', 'Endpoint: ' + window.konvertyConfig.endpoint);
+            updateCookieStatus();
+        });
+    </script>
+
+    <!-- Load Konverty Pixel - INLINE VERSION -->
+    <script>
+/**
+ * Konverty Affiliate Tracking Pixel for Magento 2
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ * @copyright Copyright (c) 2025 Konverty
+ */
+
+(function() {
+    'use strict';
+
+    // Configuration - will be populated by Magento
+    var config = window.konvertyConfig || {
+        endpoint: 'https://admin.konverty.com/trackShopify.jsp',
+        cookiePrefix: 'aff_',
+        cookieLifetime: 60,
+        platform: 'magento',
+        enabled: true,
+        trackVisits: true,
+        trackSales: true,
+        debug: false
+    };
+
+    if (!config.enabled) {
+        console.log('[Konverty Pixel] Konverty tracking disabled');
+        return;
+    }
+
+    // Debug logger
+    function log(message, data) {
+        if (config.debug && console) {
+            console.log('[Konverty Pixel]', message, data || '');
+        }
+    }
+
+    // Cookie utilities
+    function setCookie(name, value, days) {
+        var expires = new Date(Date.now() + days * 86400000).toUTCString();
+        document.cookie = encodeURIComponent(name) + '=' + encodeURIComponent(value) + 
+                         '; expires=' + expires + '; path=/; SameSite=Lax';
+        log('Cookie set:', name + '=' + value);
+    }
+
+    function getCookie(name) {
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+            var parts = cookies[i].split('=');
+            if (parts.length < 2) continue;
+            var cookieName = decodeURIComponent(parts[0]);
+            if (cookieName === name) {
+                return decodeURIComponent(parts[1]);
+            }
+        }
+        return null;
+    }
+
+    function deleteCookie(name) {
+        document.cookie = encodeURIComponent(name) + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; SameSite=Lax';
+        log('Cookie deleted:', name);
+    }
+
+    function getAllAffiliateCookies() {
+        var params = {};
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+            var parts = cookies[i].split('=');
+            if (parts.length < 2) continue;
+            var cookieName = decodeURIComponent(parts[0]);
+            if (cookieName.indexOf(config.cookiePrefix) === 0) {
+                var paramName = cookieName.substring(config.cookiePrefix.length);
+                if (paramName) {
+                    params[paramName] = decodeURIComponent(parts[1]);
+                }
+            }
+        }
+        return params;
+    }
+
+    function deleteAllAffiliateCookies() {
+        var cookies = document.cookie.split('; ');
+        for (var i = 0; i < cookies.length; i++) {
+            var parts = cookies[i].split('=');
+            if (parts.length < 2) continue;
+            var cookieName = decodeURIComponent(parts[0]);
+            if (cookieName.indexOf(config.cookiePrefix) === 0) {
+                deleteCookie(cookieName);
+            }
+        }
+        log('All affiliate cookies deleted');
+    }
+
+    // Get URL parameters
+    function getUrlParams() {
+        var params = {};
+        var searchParams = new URLSearchParams(window.location.search);
+        searchParams.forEach(function(value, key) {
+            if (value) {
+                params[key] = value;
+            }
+        });
+        return params;
+    }
+
+    // Send tracking data
+    function sendTrackingData(data) {
+        log('Sending tracking data:', data);
+
+        // Method 1: POST with fetch (modern browsers)
+        if (window.fetch) {
+            fetch(config.endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data),
+                mode: 'no-cors',
+                keepalive: true
+            }).then(function() {
+                log('Tracking data sent via fetch');
+            }).catch(function(error) {
+                log('Fetch error:', error);
+            });
+        }
+
+        // Method 2: Fallback with image beacon
+        try {
+            var url = new URL(config.endpoint);
+            url.searchParams.append('type', data.type);
+            url.searchParams.append('data', btoa(JSON.stringify(data)));
+            
+            var img = new Image();
+            img.src = url.toString();
+            img.style.display = 'none';
+            document.body.appendChild(img);
+            log('Tracking beacon sent via image');
+        } catch (e) {
+            log('Beacon error:', e);
+        }
+    }
+
+    // Track visit
+    function trackVisit() {
+        if (!config.trackVisits) {
+            log('Visit tracking disabled');
+            return;
+        }
+
+        var urlParams = getUrlParams();
+        
+        // Only track if there are URL parameters
+        if (Object.keys(urlParams).length === 0) {
+            log('No URL parameters, skipping visit tracking');
+            return;
+        }
+
+        // Save all URL parameters as cookies
+        for (var key in urlParams) {
+            if (urlParams.hasOwnProperty(key)) {
+                setCookie(config.cookiePrefix + key, urlParams[key], config.cookieLifetime);
+            }
+        }
+
+        // Send visit event
+        var visitData = {
+            type: 'visit',
+            platform: config.platform,
+            shop: window.location.hostname,
+            timestamp: new Date().toISOString(),
+            params: urlParams,
+            url: window.location.href
+        };
+
+        sendTrackingData(visitData);
+        log('Visit tracked');
+    }
+
+    // Track sale (called from success page)
+    function trackSale(orderData) {
+        if (!config.trackSales) {
+            log('Sale tracking disabled');
+            return;
+        }
+
+        var affiliateParams = getAllAffiliateCookies();
+        
+        // Only track if we have affiliate parameters
+        if (Object.keys(affiliateParams).length === 0) {
+            log('No affiliate cookies found, skipping sale tracking');
+            return;
+        }
+
+        log('Affiliate params found:', affiliateParams);
+        log('Order data:', orderData);
+
+        // Prepare sale data
+        var saleData = {
+            type: 'sale',
+            platform: config.platform,
+            shop: window.location.hostname,
+            timestamp: new Date().toISOString(),
+            order_id: orderData.orderId || orderData.order_id || '',
+            total_price: parseFloat(orderData.totalPrice || orderData.total_price || 0),
+            subtotal_price: parseFloat(orderData.subtotalPrice || orderData.subtotal_price || 0),
+            currency: orderData.currency || 'EUR',
+            discount_codes: orderData.discountCodes || orderData.discount_codes || [],
+            customer: {
+                email: orderData.customerEmail || orderData.customer_email || '',
+                phone: orderData.customerPhone || orderData.customer_phone || '',
+                name: orderData.customerName || orderData.customer_name || ''
+            },
+            shipping_address: orderData.shippingAddress || orderData.shipping_address || {},
+            billing_address: orderData.billingAddress || orderData.billing_address || {},
+            line_items: orderData.lineItems || orderData.line_items || [],
+            params: affiliateParams,
+            payment_info: orderData.paymentInfo || orderData.payment_info || []
+        };
+
+        sendTrackingData(saleData);
+        log('Sale tracked');
+
+        // Delete affiliate cookies after successful sale tracking
+        setTimeout(function() {
+            deleteAllAffiliateCookies();
+        }, 1000);
+    }
+
+    // Auto-initialize visit tracking on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', trackVisit);
+    } else {
+        trackVisit();
+    }
+
+    // Expose public API
+    window.Konverty = window.Konverty || {};
+    window.Konverty.trackVisit = trackVisit;
+    window.Konverty.trackSale = trackSale;
+    window.Konverty.config = config;
+
+    log('Konverty Pixel initialized', config);
+
+})();
+    </script>
+</body>
+</html>
+

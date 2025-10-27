@@ -1,0 +1,18 @@
+<?php
+/**
+ * Konverty Affiliate Tracker Pixel Configuration Template
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ * @copyright Copyright (c) 2025 Konverty
+ * 
+ * @var $block \Konverty\AffiliateTracker\Block\Pixel
+ */
+?>
+<?php if ($block->isEnabled()): ?>
+<script type="text/javascript">
+    window.konvertyConfig = <?= /* @noEscape */ $block->getConfigJson() ?>;
+</script>
+<?php endif; ?>
+
+

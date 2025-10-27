@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Konverty Affiliate Tracker Default Layout
+ * Injects pixel on all frontend pages
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <script src="Konverty_AffiliateTracker::js/konverty-pixel.js"/>
+    </head>
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Konverty\AffiliateTracker\Block\Pixel" 
+                   name="konverty.pixel.config" 
+                   template="Konverty_AffiliateTracker::pixel-config.phtml"/>
+        </referenceContainer>
+    </body>
+</page>
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Konverty Affiliate Tracker Default Configuration
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <konverty_affiliate>
+            <general>
+                <enabled>0</enabled>
+                <endpoint_url>https://admin.konverty.com/trackShopify.jsp</endpoint_url>
+                <webhook_endpoint_url>https://admin.konverty.com/webhookShopify.jsp</webhook_endpoint_url>
+                <cookie_lifetime>60</cookie_lifetime>
+                <debug_mode>0</debug_mode>
+            </general>
+            <advanced>
+                <track_visits>1</track_visits>
+                <track_sales>1</track_sales>
+                <send_webhooks>1</send_webhooks>
+                <cookie_prefix>aff_</cookie_prefix>
+            </advanced>
+        </konverty_affiliate>
+    </default>
+</config>
+
+

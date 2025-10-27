@@ -1,0 +1,24 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Magento
+var/
+generated/
+pub/static/
+pub/media/
+
+# Composer
+vendor/
+composer.lock
+
+# Work Notes (temporary development notes)
+work-notes/
+

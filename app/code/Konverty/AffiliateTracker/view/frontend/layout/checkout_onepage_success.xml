@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Konverty Affiliate Tracker Checkout Success Layout
+ * Tracks completed orders on success page
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ */
+-->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="before.body.end">
+            <block class="Konverty\AffiliateTracker\Block\OrderSuccess" 
+                   name="konverty.pixel.order" 
+                   template="Konverty_AffiliateTracker::order-success.phtml" 
+                   after="konverty.pixel.config"/>
+        </referenceContainer>
+    </body>
+</page>
+
+

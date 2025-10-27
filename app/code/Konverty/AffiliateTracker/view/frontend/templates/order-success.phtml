@@ -1,0 +1,35 @@
+<?php
+/**
+ * Konverty Affiliate Tracker Order Success Template
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ * @copyright Copyright (c) 2025 Konverty
+ * 
+ * @var $block \Konverty\AffiliateTracker\Block\OrderSuccess
+ */
+?>
+<?php if ($block->isEnabled() && $block->getOrder()): ?>
+<script type="text/javascript">
+    (function() {
+        // Wait for Konverty pixel to be loaded
+        function trackOrder() {
+            if (window.Konverty && window.Konverty.trackSale) {
+                var orderData = <?= /* @noEscape */ $block->getOrderDataJson() ?>;
+                window.Konverty.trackSale(orderData);
+            } else {
+                // Retry after a short delay
+                setTimeout(trackOrder, 100);
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', trackOrder);
+        } else {
+            trackOrder();
+        }
+    })();
+</script>
+<?php endif; ?>
+
+

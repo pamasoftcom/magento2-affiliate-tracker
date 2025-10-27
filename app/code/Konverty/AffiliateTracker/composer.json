@@ -1,0 +1,46 @@
+{
+  "name": "konverty/magento2-affiliate-tracker",
+  "description": "Konverty Affiliate Tracking Pixel for Magento 2 - Tracks visits and sales with affiliate parameters",
+  "type": "magento2-module",
+  "version": "1.0.0",
+  "license": "proprietary",
+  "keywords": [
+    "magento2",
+    "affiliate",
+    "tracking",
+    "pixel",
+    "konverty",
+    "analytics"
+  ],
+  "homepage": "https://github.com/konverty/magento2-affiliate-tracker",
+  "support": {
+    "email": "info@konverty.com",
+    "issues": "https://github.com/konverty/magento2-affiliate-tracker/issues",
+    "source": "https://github.com/konverty/magento2-affiliate-tracker"
+  },
+  "authors": [
+    {
+      "name": "Konverty Team",
+      "email": "info@konverty.com",
+      "homepage": "https://konverty.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=7.4.0",
+    "magento/framework": ">=102.0.0",
+    "magento/module-backend": ">=102.0.0",
+    "magento/module-sales": ">=103.0.0",
+    "magento/module-checkout": ">=100.4.0"
+  },
+  "autoload": {
+    "files": [
+      "registration.php"
+    ],
+    "psr-4": {
+      "Konverty\\AffiliateTracker\\": ""
+    }
+  }
+}
+
+

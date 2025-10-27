@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Konverty Affiliate Tracker Events Configuration
+ * 
+ * @category  Konverty
+ * @package   Konverty_AffiliateTracker
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    
+    <!-- Order placed/completed - Track sale -->
+    <event name="sales_order_place_after">
+        <observer name="konverty_track_order_complete" 
+                  instance="Konverty\AffiliateTracker\Observer\OrderCompleteObserver"/>
+    </event>
+    
+    <!-- Order cancelled - Update status -->
+    <event name="order_cancel_after">
+        <observer name="konverty_track_order_cancel" 
+                  instance="Konverty\AffiliateTracker\Observer\OrderCancelObserver"/>
+    </event>
+    
+    <!-- Credit memo (refund) created - Update status -->
+    <event name="sales_order_creditmemo_save_after">
+        <observer name="konverty_track_creditmemo" 
+                  instance="Konverty\AffiliateTracker\Observer\CreditmemoSaveObserver"/>
+    </event>
+    
+    <!-- Order shipment created (fulfilled) - Update status -->
+    <event name="sales_order_shipment_save_after">
+        <observer name="konverty_track_order_shipment" 
+                  instance="Konverty\AffiliateTracker\Observer\OrderShipmentObserver"/>
+    </event>
+</config>
+
+
