@@ -24,7 +24,7 @@ Il plugin si integra con il sistema backend Konverty (`admin.konverty.com`) riut
 cd /path/to/magento
 
 # Aggiungi repository
-composer config repositories.konverty-tracker vcs https://github.com/konverty/magento2-affiliate-tracker
+composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom/magento2-affiliate-tracker
 
 # Installa plugin
 composer require konverty/magento2-affiliate-tracker
