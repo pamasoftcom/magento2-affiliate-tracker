@@ -35,12 +35,11 @@
   },
   "autoload": {
     "files": [
-      "registration.php"
+      "app/code/Konverty/AffiliateTracker/registration.php"
     ],
     "psr-4": {
-      "Konverty\\AffiliateTracker\\": ""
+      "Konverty\\AffiliateTracker\\": "app/code/Konverty/AffiliateTracker/"
     }
   }
 }
-
 

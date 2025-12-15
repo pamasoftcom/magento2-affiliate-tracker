@@ -444,4 +444,15 @@ app/code/Konverty/AffiliateTracker/
 
 **Konverty Affiliate Tracker** - Tracciamento affiliazioni professionale per Magento 2
 
+---
+
+## 📦 Pixel per Shopify (repo separata)
+
+Il pixel Shopify con istruzioni dedicate è ora in una repo separata:
+- Cartella locale: `../konverty-shopify-pixel`
+- File JS: `konverty-pixel-shopify.js`
+- Doc rapida: `README.md`
+
+Quando sarà pubblicato su GitHub, sostituisci il link con l'URL del nuovo repository.
+
 

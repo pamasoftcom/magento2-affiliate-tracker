@@ -20,7 +20,7 @@ Guida per installare il plugin Konverty tramite Composer (metodo consigliato).
 ```bash
 cd /path/to/your/magento
 
-composer config repositories.konverty-tracker vcs https://github.com/konverty/magento2-affiliate-tracker
+composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom/magento2-affiliate-tracker
 ```
 
 ### Step 2: Installa Plugin
