@@ -29,7 +29,7 @@ composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom
 composer require konverty/magento2-affiliate-tracker --ignore-platform-reqs
 ```
 
-**Nota:** L'opzione `--ignore-platform-reqs` evita problemi con le credenziali Magento, dato che le dipendenze sono già presenti nell'installazione.
+**⚠️ IMPORTANTE:** L'opzione `--ignore-platform-reqs` è necessaria per evitare che Composer richieda credenziali Magento. Le dipendenze Magento sono già presenti nell'installazione, quindi questa opzione è sicura.
 
 ### Step 3: Abilita e Configura
 
