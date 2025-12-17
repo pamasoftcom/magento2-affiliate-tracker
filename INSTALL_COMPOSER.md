@@ -158,13 +158,33 @@ php bin/magento cache:flush
 
 ## 🐛 TROUBLESHOOTING
 
+### Problema: "Invalid credentials (HTTP 401) for repo.magento.com"
+
+**Causa:** Composer sta cercando di verificare dipendenze Magento che richiedono autenticazione
+
+**Soluzione 1 (Raccomandato):** Il plugin non richiede più le dipendenze Magento esplicitamente (sono già presenti nell'installazione). Aggiorna il repository e riprova:
+```bash
+composer clear-cache
+composer require konverty/magento2-affiliate-tracker
+```
+
+**Soluzione 2:** Se il problema persiste, configura le credenziali Magento (richieste solo se Composer deve verificare dipendenze):
+```bash
+# Ottieni le credenziali da: https://marketplace.magento.com/customer/accessKeys/
+composer config --global http-basic.repo.magento.com PUBLIC_KEY PRIVATE_KEY
+```
+
+**Soluzione 3:** Installa manualmente (vedi [INSTALL.md](INSTALL.md))
+
+---
+
 ### Problema: "Package not found"
 
 **Causa:** Repository non aggiunto
 
 **Soluzione:**
 ```bash
-composer config repositories.konverty-tracker vcs https://github.com/konverty/magento2-affiliate-tracker
+composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom/magento2-affiliate-tracker
 ```
 
 ---

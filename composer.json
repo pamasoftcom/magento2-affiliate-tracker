@@ -27,11 +27,13 @@
     }
   ],
   "require": {
-    "php": ">=7.4.0",
-    "magento/framework": ">=102.0.0",
-    "magento/module-backend": ">=102.0.0",
-    "magento/module-sales": ">=103.0.0",
-    "magento/module-checkout": ">=100.4.0"
+    "php": ">=7.4.0"
+  },
+  "suggest": {
+    "magento/framework": ">=102.0.0 (already included in Magento 2.3+ installation)",
+    "magento/module-backend": ">=102.0.0 (already included in Magento 2.3+ installation)",
+    "magento/module-sales": ">=103.0.0 (already included in Magento 2.3+ installation)",
+    "magento/module-checkout": ">=100.4.0 (already included in Magento 2.3+ installation)"
   },
   "autoload": {
     "files": [
