@@ -26,8 +26,10 @@ composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom
 ### Step 2: Installa Plugin
 
 ```bash
-composer require konverty/magento2-affiliate-tracker
+composer require konverty/magento2-affiliate-tracker --ignore-platform-reqs
 ```
+
+**Nota:** L'opzione `--ignore-platform-reqs` evita problemi con le credenziali Magento, dato che le dipendenze sono già presenti nell'installazione.
 
 ### Step 3: Abilita e Configura
 
@@ -162,11 +164,13 @@ php bin/magento cache:flush
 
 **Causa:** Composer sta cercando di verificare dipendenze Magento che richiedono autenticazione
 
-**Soluzione 1 (Raccomandato):** Il plugin non richiede più le dipendenze Magento esplicitamente (sono già presenti nell'installazione). Aggiorna il repository e riprova:
+**Soluzione 1 (Raccomandato):** Il plugin non richiede più le dipendenze Magento esplicitamente. Pulisci la cache e riprova:
 ```bash
 composer clear-cache
-composer require konverty/magento2-affiliate-tracker
+composer require konverty/magento2-affiliate-tracker --ignore-platform-reqs
 ```
+
+**Nota:** L'opzione `--ignore-platform-reqs` ignora i requisiti delle piattaforme (Magento) che sono già presenti nell'installazione.
 
 **Soluzione 2:** Se il problema persiste, configura le credenziali Magento (richieste solo se Composer deve verificare dipendenze):
 ```bash
