@@ -10,6 +10,39 @@ Guida per installare il plugin Konverty tramite Composer (metodo consigliato).
 - Composer installato
 - Accesso SSH al server
 - Permessi di scrittura su cartella Magento
+- **Credenziali Magento** (se Composer richiede autenticazione - vedi sotto)
+
+---
+
+## 🔑 CONFIGURAZIONE CREDENZIALI MAGENTO (Se Richiesto)
+
+Se Composer richiede autenticazione per `repo.magento.com`, configura le credenziali:
+
+### 1. Ottieni le credenziali Magento
+
+1. Vai su: https://marketplace.magento.com/customer/accessKeys/
+2. Accedi con il tuo account Magento
+3. Crea nuove chiavi di accesso (se non le hai già)
+4. Copia **Public Key** e **Private Key**
+
+### 2. Configura Composer
+
+```bash
+composer config --global http-basic.repo.magento.com PUBLIC_KEY PRIVATE_KEY
+```
+
+**Esempio:**
+```bash
+composer config --global http-basic.repo.magento.com abc123def456 xyz789uvw012
+```
+
+### 3. Verifica Configurazione
+
+```bash
+composer config --global --list | grep magento
+```
+
+Dovresti vedere le credenziali configurate.
 
 ---
 
@@ -25,11 +58,21 @@ composer config repositories.konverty-tracker vcs https://github.com/pamasoftcom
 
 ### Step 2: Installa Plugin
 
+**⚠️ IMPORTANTE:** Se Composer richiede credenziali Magento e non le hai, usa l'[installazione manuale da GitHub](INSTALL.md) invece di Composer.
+
+**Opzione A: Con credenziali Magento configurate**
 ```bash
-composer require konverty/magento2-affiliate-tracker --ignore-platform-reqs
+composer require konverty/magento2-affiliate-tracker
 ```
 
-**⚠️ IMPORTANTE:** L'opzione `--ignore-platform-reqs` è necessaria per evitare che Composer richieda credenziali Magento. Le dipendenze Magento sono già presenti nell'installazione, quindi questa opzione è sicura.
+**Opzione B: Senza credenziali Magento (se richiede autenticazione)**
+
+Se Composer chiede credenziali per `repo.magento.com` e non le hai:
+
+1. **Configura le credenziali** (vedi sezione "Configurazione Credenziali" sotto), oppure
+2. **Usa installazione manuale** da GitHub: vedi [INSTALL.md](INSTALL.md)
+
+**Nota:** Il plugin non richiede dipendenze Magento esplicite (sono già presenti nell'installazione), ma Composer potrebbe comunque richiedere autenticazione per verificare le dipendenze del progetto Magento principale.
 
 ### Step 3: Abilita e Configura
 
@@ -160,7 +203,13 @@ php bin/magento cache:flush
 
 ## 🐛 TROUBLESHOOTING
 
-### Problema: "Invalid credentials (HTTP 401) for repo.magento.com"
+### Problema: "Invalid credentials (HTTP 401) for repo.magento.com" - Non ho accesso al Marketplace
+
+**Soluzione:** Usa l'[installazione manuale da GitHub](INSTALL.md) invece di Composer. È più semplice e non richiede credenziali.
+
+---
+
+### Problema: "Invalid credentials (HTTP 401) for repo.magento.com" - Ho accesso al Marketplace
 
 **Causa:** Composer sta cercando di verificare dipendenze Magento che richiedono autenticazione
 

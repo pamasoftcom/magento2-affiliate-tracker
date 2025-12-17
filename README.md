@@ -18,7 +18,14 @@ Il plugin si integra con il sistema backend Konverty (`admin.konverty.com`) riut
 
 ### Metodo 1: Composer (Raccomandato) ⭐
 
-**Il metodo più semplice e veloce:**
+**⚠️ IMPORTANTE - Credenziali Magento Marketplace:**
+
+L'installazione via Composer potrebbe richiedere le credenziali di accesso al Magento Marketplace (`repo.magento.com`). Questo accade perché Composer verifica le dipendenze del progetto Magento principale.
+
+- **Se hai le credenziali:** Configurale una volta (vedi [INSTALL_COMPOSER.md](INSTALL_COMPOSER.md#-configurazione-credenziali-magento-se-richiesto)) e procedi con l'installazione
+- **Se NON hai le credenziali:** Usa l'[installazione manuale](#metodo-2-installazione-manuale) invece - è più semplice e non richiede credenziali
+
+**Installazione via Composer:**
 
 ```bash
 cd /path/to/magento
